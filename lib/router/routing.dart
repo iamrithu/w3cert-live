@@ -1,14 +1,19 @@
 // ignore_for_file: unused_field
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:w3cert/models/leaveModel.dart';
 import 'package:w3cert/router/routing-const.dart';
 import 'package:w3cert/screens/attendence/attendence.dart';
+import 'package:w3cert/screens/leads/lead.dart';
 import 'package:w3cert/screens/task/task.dart';
 
 import '../provider/providers.dart';
 import '../screens/dashboard/dashboard.dart';
+import '../screens/leave/leave.dart';
 import '../screens/notification/notification.dart';
 
 import '../screens/employee/employee.dart';
@@ -97,6 +102,22 @@ class RouterNotifier extends ChangeNotifier {
             return const MaterialPage(
               child: Tasks(),
             );
+          },
+        ),
+        GoRoute(
+          name: RoutingConstants.lead,
+          path: '/lead',
+          pageBuilder: (context, state) {
+            return const MaterialPage(
+              child: Leads(),
+            );
+          },
+        ),
+        GoRoute(
+          name: RoutingConstants.leave,
+          path: '/leave',
+          pageBuilder: (context, state) {
+            return MaterialPage(child: Leave());
           },
         ),
       ];

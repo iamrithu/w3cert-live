@@ -52,7 +52,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
         appBar: AppBar(
           title: Text(
             "Dashboard",
-            style: GoogleFonts.josefinSans(
+            style: GoogleFonts.ptSans(
                 color: GlobalColors.white,
                 fontSize: width < 500 ? width / 25 : width / 35),
           ),
@@ -66,7 +66,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
         ),
         drawer: Drawer(
           elevation: 10,
-          width: width < 500 ? width * 0.7 : width * 0.4,
+          width: width < 500 ? width * 0.7 : width * 0.5,
           child: CustomDrawer(
             width: width,
             height: height,
@@ -82,7 +82,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                 elevation: 10,
                 child: Container(
                   width: width,
-                  height: height * 0.2,
+                  height: height * 0.25,
                   child: Column(
                     children: [
                       Container(
@@ -103,7 +103,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                               children: [
                                 Text(
                                   "Attendence",
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.white,
                                       fontSize: width < 500
                                           ? width / 30
@@ -127,7 +127,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                                             ref.watch(attendenceDate)
                                         ? " Today : ${ref.watch(attendenceDate)}"
                                         : "${ref.watch(attendenceDate)}",
-                                    style: GoogleFonts.josefinSans(
+                                    style: GoogleFonts.ptSans(
                                         color: DateFormat("dd-MM-yyyy")
                                                     .format(DateTime.now()) ==
                                                 ref.watch(attendenceDate)
@@ -193,7 +193,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                                 children: [
                                   Text(
                                     "Present(${present.length})",
-                                    style: GoogleFonts.josefinSans(
+                                    style: GoogleFonts.ptSans(
                                         color: GlobalColors.dark,
                                         fontSize: width < 500
                                             ? width / 35
@@ -212,7 +212,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                                   ),
                                   Text(
                                     "Absent(${absent.length})",
-                                    style: GoogleFonts.josefinSans(
+                                    style: GoogleFonts.ptSans(
                                         color: GlobalColors.dark,
                                         fontSize: width < 500
                                             ? width / 35
@@ -241,22 +241,22 @@ class _DashboardState extends ConsumerState<Dashboard> {
                           });
                         },
                       ),
-                      Container(
-                        width: width,
-                        height: height * 0.05,
-                        padding: EdgeInsets.only(top: 0.5, left: 10),
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                top: BorderSide(
-                                    color: GlobalColors.light, width: 0.5))),
-                        child: InkWell(
-                          onTap: () {
-                            context.pushNamed(RoutingConstants.attendence);
-                          },
+                      InkWell(
+                        onTap: () {
+                          context.pushNamed(RoutingConstants.attendence);
+                        },
+                        child: Container(
+                          width: width,
+                          height: height * 0.05,
+                          padding: EdgeInsets.only(top: 0.5, left: 10),
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  top: BorderSide(
+                                      color: GlobalColors.light, width: 0.5))),
                           child: Text(
                             "View Full Attendence ->",
-                            style: GoogleFonts.josefinSans(
+                            style: GoogleFonts.ptSans(
                                 color: GlobalColors.light,
                                 fontSize: width < 500 ? width / 40 : width / 50,
                                 fontWeight: FontWeight.normal),

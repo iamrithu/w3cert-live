@@ -60,7 +60,7 @@ customAlert(context, width, height, success, content) {
               Flexible(
                 child: Text(
                   content,
-                  style: GoogleFonts.josefinSans(
+                  style: GoogleFonts.ptSans(
                     color: !success ? GlobalColors.red : GlobalColors.green,
                     fontSize: width < 500 ? width / 30 : width / 45,
                   ),

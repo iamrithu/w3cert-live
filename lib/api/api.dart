@@ -11,6 +11,8 @@ import 'package:w3cert/models/taskModel.dart';
 
 import '../const/const.dart';
 import '../models/attendenceModel.dart';
+import '../models/leadModel.dart';
+import '../models/leaveModel.dart';
 import '../models/notificationModel.dart';
 import '../models/projectModel.dart';
 import '../models/taskDetailModel.dart';
@@ -47,7 +49,7 @@ class Api {
       "without_duedate": data["without_duedate"],
       "project_id": data["project_id"],
       "category_id": data["category_id"],
-      "priority": 1,
+      "priority": data["priority"],
       "is_private": null,
       "billable": 0,
       "estimate_minutes": 0,
@@ -70,6 +72,28 @@ class Api {
     } on DioError catch (e) {
       print("${e.response}");
 
+      return e.response;
+    }
+  }
+
+  Future leaveUpdate(String token, int id, String action) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+    try {
+      var params = {
+        "status": action,
+      };
+
+      print("${id}");
+
+      print(params.toString());
+      Response response = await dio.post(
+        "leave/${id}",
+        data: jsonEncode(params),
+      );
+      print(response.toString());
+      return response;
+    } on DioError catch (e) {
+      print(e.response.toString());
       return e.response;
     }
   }
@@ -190,13 +214,39 @@ class providerApi {
   Future<TaskDetailsModel> taskById(String? token, int id) async {
     dio.options.headers["Authorization"] = "Bearer $token";
 
-    print("${id}");
     try {
       Response response = await dio.get("task/${id}");
-      print(response.data.toString());
       TaskDetailsModel task = TaskDetailsModel.fromJson(response.data);
 
       return task;
+    } on DioError catch (e) {
+      throw e.response!;
+    }
+  }
+
+  Future<List<LeaveModel>> leaves(String? token) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+    try {
+      Response response = await dio.get("leaves");
+      List<LeaveModel> leave = [];
+      response.data.map((e) {
+        leave.add(LeaveModel.fromJson(e));
+      }).toList();
+      return leave;
+    } on DioError catch (e) {
+      throw e.response!;
+    }
+  }
+
+  Future<List<LeadModel>> leads(String? token) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+    try {
+      Response response = await dio.get("leads");
+      List<LeadModel> leads = [];
+      response.data.map((e) {
+        leads.add(LeadModel.fromJson(e));
+      }).toList();
+      return leads;
     } on DioError catch (e) {
       throw e.response!;
     }

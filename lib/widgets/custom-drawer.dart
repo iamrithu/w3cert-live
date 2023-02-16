@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:w3cert/models/userModel.dart';
 import 'package:w3cert/provider/providers.dart';
 
 import '../const/const.dart';
@@ -40,10 +40,11 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
 
               return user.when(data: (_value) {
                 return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
+                      width: widget.width * 0.1,
                       margin: EdgeInsets.all(20),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(1000),
@@ -51,26 +52,29 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
                       ),
                     ),
                     Container(
+                      width: widget.width < 500
+                          ? widget.width * 0.5
+                          : widget.width * 0.3,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               '${_value.user!.name}',
-                              style: GoogleFonts.josefinSans(
+                              style: GoogleFonts.ptSans(
                                 color: GlobalColors.white,
                                 fontSize: widget.width < 500
                                     ? widget.width / 30
-                                    : widget.width / 40,
+                                    : widget.width / 55,
                               ),
                             ),
                             Text(
                               '${_value.user!.employeeDetail!.designation.name}',
-                              style: GoogleFonts.josefinSans(
+                              style: GoogleFonts.ptSans(
                                 color: GlobalColors.white,
                                 fontSize: widget.width < 500
                                     ? widget.width / 35
-                                    : widget.width / 45,
+                                    : widget.width / 60,
                               ),
                             ),
                           ]),
@@ -97,7 +101,7 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
                   child: CustomListview(
                     width: widget.width,
                     height: widget.height,
-                    asset: "Assets/layout.png",
+                    asset: FontAwesomeIcons.gauge,
                     content: "Dashboard",
                   ),
                 ),
@@ -110,15 +114,21 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
                   child: CustomListview(
                     width: widget.width,
                     height: widget.height,
-                    asset: "Assets/recruitment.png",
+                    asset: FontAwesomeIcons.personArrowDownToLine,
                     content: "Employee",
                   ),
                 ),
-                CustomListview(
-                  width: widget.width,
-                  height: widget.height,
-                  asset: "Assets/project.png",
-                  content: "Projects",
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    context.pushNamed(RoutingConstants.lead);
+                  },
+                  child: CustomListview(
+                    width: widget.width,
+                    height: widget.height,
+                    asset: Icons.leaderboard,
+                    content: "Leads",
+                  ),
                 ),
                 InkWell(
                   onTap: () {
@@ -129,7 +139,7 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
                   child: CustomListview(
                     width: widget.width,
                     height: widget.height,
-                    asset: "Assets/tasks.png",
+                    asset: FontAwesomeIcons.listCheck,
                     content: "Tasks",
                   ),
                 ),
@@ -147,40 +157,47 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
                   child: CustomListview(
                     width: widget.width,
                     height: widget.height,
-                    asset: "Assets/attendence.png",
+                    asset: FontAwesomeIcons.calendar,
                     content: "Attendence",
                   ),
                 ),
-                CustomListview(
-                  width: widget.width,
-                  height: widget.height,
-                  asset: "Assets/bill.png",
-                  content: "Invoices",
+                // CustomListview(
+                //   width: widget.width,
+                //   height: widget.height,
+                //   asset: "Assets/bill.png",
+                //   content: "Invoices",
+                // ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+
+                    context.pushNamed(RoutingConstants.leave);
+                  },
+                  child: CustomListview(
+                    width: widget.width,
+                    height: widget.height,
+                    asset: FontAwesomeIcons.calendarCheck,
+                    content: "Leaves",
+                  ),
                 ),
-                CustomListview(
-                  width: widget.width,
-                  height: widget.height,
-                  asset: "Assets/leave.png",
-                  content: "Leaves",
-                ),
-                CustomListview(
-                  width: widget.width,
-                  height: widget.height,
-                  asset: "Assets/expenses.png",
-                  content: "Expenses",
-                ),
-                CustomListview(
-                  width: widget.width,
-                  height: widget.height,
-                  asset: "Assets/ticket.png",
-                  content: "Tickets",
-                ),
-                CustomListview(
-                  width: widget.width,
-                  height: widget.height,
-                  asset: "Assets/info.png",
-                  content: "About",
-                ),
+                // CustomListview(
+                //   width: widget.width,
+                //   height: widget.height,
+                //   asset: "Assets/expenses.png",
+                //   content: "Expenses",
+                // ),
+                // CustomListview(
+                //   width: widget.width,
+                //   height: widget.height,
+                //   asset: "Assets/ticket.png",
+                //   content: "Tickets",
+                // ),
+                // CustomListview(
+                //   width: widget.width,
+                //   height: widget.height,
+                //   asset: "Assets/info.png",
+                //   content: "About",
+                // ),
                 InkWell(
                   onTap: () async {
                     final prefs = await SharedPreferences.getInstance();
@@ -194,7 +211,7 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
                   child: CustomListview(
                     width: widget.width,
                     height: widget.height,
-                    asset: "Assets/logout.png",
+                    asset: Icons.exit_to_app,
                     content: "Logout",
                   ),
                 ),

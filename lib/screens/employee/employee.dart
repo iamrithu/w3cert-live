@@ -38,7 +38,7 @@ class _EmployeeState extends ConsumerState<Employee> {
         appBar: AppBar(
           title: Text(
             "Employees",
-            style: GoogleFonts.josefinSans(
+            style: GoogleFonts.ptSans(
                 color: GlobalColors.white,
                 fontSize: width < 500 ? width / 25 : width / 35),
           ),
@@ -52,7 +52,7 @@ class _EmployeeState extends ConsumerState<Employee> {
         ),
         drawer: Drawer(
           elevation: 10,
-          width: width < 500 ? width * 0.7 : width * 0.4,
+          width: width < 500 ? width * 0.7 : width * 0.5,
           child: CustomDrawer(
             width: width,
             height: height,
@@ -67,19 +67,20 @@ class _EmployeeState extends ConsumerState<Employee> {
                 children: [
                   for (var i = 0; i < _data.length; i++)
                     Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                          side: BorderSide(
+                              color: Color.fromARGB(255, 155, 202, 244),
+                              width: 0.5)),
                       child: Container(
                         width: width,
-                        height: height * 0.07,
+                        height: width < 500 ? height * 0.07 : height * 0.09,
                         padding: EdgeInsets.only(bottom: 1),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: GlobalColors.light),
-                          ),
-                        ),
                         child: Row(
                           children: [
                             Container(
-                              width: width * 0.13,
+                              width: width < 500 ? width * 0.13 : width * 0.07,
                               margin: EdgeInsets.symmetric(
                                   horizontal: width * 0.02),
                               child: Card(
@@ -107,7 +108,7 @@ class _EmployeeState extends ConsumerState<Employee> {
                                     children: [
                                       Text(
                                         "${_data[i].name!}",
-                                        style: GoogleFonts.josefinSans(
+                                        style: GoogleFonts.ptSans(
                                             color: GlobalColors.dark,
                                             fontSize: width < 500
                                                 ? width / 35
@@ -123,7 +124,7 @@ class _EmployeeState extends ConsumerState<Employee> {
                                         width: width * 0.3,
                                         child: Text(
                                           "${_data[i].designationName}",
-                                          style: GoogleFonts.josefinSans(
+                                          style: GoogleFonts.ptSans(
                                               color: GlobalColors.light,
                                               fontSize: width < 500
                                                   ? width / 35
@@ -142,7 +143,7 @@ class _EmployeeState extends ConsumerState<Employee> {
                                       ),
                                       Text(
                                         "Active",
-                                        style: GoogleFonts.josefinSans(
+                                        style: GoogleFonts.ptSans(
                                             color: GlobalColors.dark,
                                             fontSize: width < 500
                                                 ? width / 35

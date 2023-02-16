@@ -55,7 +55,7 @@ class _AttendenceState extends ConsumerState<Attendence> {
             children: [
               Text(
                 "Attendence",
-                style: GoogleFonts.josefinSans(
+                style: GoogleFonts.ptSans(
                     color: GlobalColors.white,
                     fontSize: width < 500 ? width / 25 : width / 35),
               ),
@@ -74,7 +74,7 @@ class _AttendenceState extends ConsumerState<Attendence> {
                           ref.watch(attendenceDate)
                       ? " Today : ${ref.watch(attendenceDate)}"
                       : "${ref.watch(attendenceDate)}",
-                  style: GoogleFonts.josefinSans(
+                  style: GoogleFonts.ptSans(
                       color: DateFormat("dd-MM-yyyy").format(DateTime.now()) ==
                               ref.watch(attendenceDate)
                           ? GlobalColors.blue
@@ -118,7 +118,7 @@ class _AttendenceState extends ConsumerState<Attendence> {
         ),
         drawer: Drawer(
           elevation: 10,
-          width: width < 500 ? width * 0.7 : width * 0.4,
+          width: width < 500 ? width * 0.7 : width * 0.5,
           child: CustomDrawer(
             width: width,
             height: height,
@@ -131,7 +131,7 @@ class _AttendenceState extends ConsumerState<Attendence> {
             children: [
               Container(
                 width: width,
-                height: height * 0.05,
+                height: width < 500 ? height * 0.05 : height * 0.065,
                 color: GlobalColors.white,
                 child: ToggleButtons(
                   onPressed: (int index) {
@@ -146,8 +146,9 @@ class _AttendenceState extends ConsumerState<Attendence> {
                   selectedColor: Colors.white,
                   fillColor: GlobalColors.themeColor,
                   color: GlobalColors.themeColor,
-                  constraints:
-                      BoxConstraints(minHeight: 40.0, minWidth: width * 0.495),
+                  constraints: BoxConstraints(
+                      minHeight: width < 500 ? 40.0 : 80,
+                      minWidth: width * 0.495),
                   isSelected: _selectedaction,
                   children: action.map((e) => Text(e)).toList(),
                 ),
@@ -171,20 +172,23 @@ class _AttendenceState extends ConsumerState<Attendence> {
                           if (present[i].name != "Richard C" &&
                               present[i].name != "Robinson")
                             Card(
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  side: BorderSide(
+                                      color: Color.fromARGB(255, 155, 202, 244),
+                                      width: 0.5)),
                               child: Container(
                                 width: width,
-                                height: height * 0.07,
+                                height:
+                                    width < 500 ? height * 0.07 : height * 0.09,
                                 padding: EdgeInsets.only(bottom: 1),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom:
-                                        BorderSide(color: GlobalColors.light),
-                                  ),
-                                ),
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: width * 0.13,
+                                      width: width < 500
+                                          ? width * 0.13
+                                          : width * 0.09,
                                       margin: EdgeInsets.symmetric(
                                           horizontal: width * 0.02),
                                       child: Card(
@@ -212,7 +216,7 @@ class _AttendenceState extends ConsumerState<Attendence> {
                                             children: [
                                               Text(
                                                 "${present[i].name!}",
-                                                style: GoogleFonts.josefinSans(
+                                                style: GoogleFonts.ptSans(
                                                     color: GlobalColors.dark,
                                                     fontSize: width < 500
                                                         ? width / 35
@@ -228,13 +232,11 @@ class _AttendenceState extends ConsumerState<Attendence> {
                                                 width: width * 0.3,
                                                 child: Text(
                                                   "${present[i].designationName}",
-                                                  style:
-                                                      GoogleFonts.josefinSans(
-                                                          color: GlobalColors
-                                                              .light,
-                                                          fontSize: width < 500
-                                                              ? width / 35
-                                                              : width / 55),
+                                                  style: GoogleFonts.ptSans(
+                                                      color: GlobalColors.light,
+                                                      fontSize: width < 500
+                                                          ? width / 35
+                                                          : width / 55),
                                                 ),
                                               ),
                                               Container(
@@ -251,7 +253,7 @@ class _AttendenceState extends ConsumerState<Attendence> {
                                               ),
                                               Text(
                                                 "Present",
-                                                style: GoogleFonts.josefinSans(
+                                                style: GoogleFonts.ptSans(
                                                     color: GlobalColors.dark,
                                                     fontSize: width < 500
                                                         ? width / 35
@@ -282,20 +284,23 @@ class _AttendenceState extends ConsumerState<Attendence> {
                           if (absent[i].name != "Richard C" &&
                               absent[i].name != "Robinson")
                             Card(
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                  side: BorderSide(
+                                      color: Color.fromARGB(255, 155, 202, 244),
+                                      width: 0.5)),
                               child: Container(
                                 width: width,
-                                height: height * 0.07,
+                                height:
+                                    width < 500 ? height * 0.07 : height * 0.09,
                                 padding: EdgeInsets.only(bottom: 1),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom:
-                                        BorderSide(color: GlobalColors.light),
-                                  ),
-                                ),
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: width * 0.13,
+                                      width: width < 500
+                                          ? width * 0.13
+                                          : width * 0.09,
                                       margin: EdgeInsets.symmetric(
                                           horizontal: width * 0.02),
                                       child: Card(
@@ -323,7 +328,7 @@ class _AttendenceState extends ConsumerState<Attendence> {
                                             children: [
                                               Text(
                                                 "${absent[i].name!}",
-                                                style: GoogleFonts.josefinSans(
+                                                style: GoogleFonts.ptSans(
                                                     color: GlobalColors.dark,
                                                     fontSize: width < 500
                                                         ? width / 35
@@ -339,13 +344,11 @@ class _AttendenceState extends ConsumerState<Attendence> {
                                                 width: width * 0.3,
                                                 child: Text(
                                                   "${absent[i].designationName}",
-                                                  style:
-                                                      GoogleFonts.josefinSans(
-                                                          color: GlobalColors
-                                                              .light,
-                                                          fontSize: width < 500
-                                                              ? width / 35
-                                                              : width / 55),
+                                                  style: GoogleFonts.ptSans(
+                                                      color: GlobalColors.light,
+                                                      fontSize: width < 500
+                                                          ? width / 35
+                                                          : width / 55),
                                                 ),
                                               ),
                                               Container(
@@ -362,7 +365,7 @@ class _AttendenceState extends ConsumerState<Attendence> {
                                               ),
                                               Text(
                                                 "Absent",
-                                                style: GoogleFonts.josefinSans(
+                                                style: GoogleFonts.ptSans(
                                                     color: GlobalColors.dark,
                                                     fontSize: width < 500
                                                         ? width / 35

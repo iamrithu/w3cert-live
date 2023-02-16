@@ -77,7 +77,7 @@ class _TasksState extends ConsumerState<Tasks> {
         ),
         drawer: Drawer(
           elevation: 10,
-          width: width < 500 ? width * 0.7 : width * 0.4,
+          width: width < 500 ? width * 0.7 : width * 0.5,
           child: CustomDrawer(
             width: width,
             height: height,
@@ -104,14 +104,24 @@ class _TasksState extends ConsumerState<Tasks> {
                                 child: TaskDetail()));
                       },
                       child: Card(
-                        elevation: 10,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            side: BorderSide(
+                                color: Color.fromARGB(255, 155, 202, 244),
+                                width: 0.5)),
                         child: Container(
-                          width: width * 0.95,
-                          height: height * 0.13,
+                          constraints: BoxConstraints(
+                              minHeight: height * 0.13, minWidth: width * 0.95),
+                          // width: width * 0.95,
+                          // height: height * 0.13,
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -126,7 +136,7 @@ class _TasksState extends ConsumerState<Tasks> {
                                               color: GlobalColors.dark,
                                               fontSize: width < 500
                                                   ? width / 35
-                                                  : width / 35),
+                                                  : width / 55),
                                         ),
                                       ],
                                     ),
@@ -141,7 +151,7 @@ class _TasksState extends ConsumerState<Tasks> {
                                               color: GlobalColors.blue,
                                               fontSize: width < 500
                                                   ? width / 35
-                                                  : width / 35),
+                                                  : width / 55),
                                         ),
                                       ],
                                     ),
@@ -155,19 +165,22 @@ class _TasksState extends ConsumerState<Tasks> {
                                             color: GlobalColors.light,
                                             size: width < 500
                                                 ? width / 35
-                                                : width / 35),
+                                                : width / 55),
                                         Text(
-                                          "${_data[i].createOn}24-02-2023",
+                                          "${_data[i].createOn}",
                                           style: GoogleFonts.josefinSans(
                                               color: GlobalColors.light,
                                               fontSize: width < 500
                                                   ? width / 35
-                                                  : width / 35),
+                                                  : width / 55),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -182,7 +195,7 @@ class _TasksState extends ConsumerState<Tasks> {
                                               color: GlobalColors.light,
                                               size: width < 500
                                                   ? width / 35
-                                                  : width / 35),
+                                                  : width / 55),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(left: 4.0),
@@ -192,7 +205,7 @@ class _TasksState extends ConsumerState<Tasks> {
                                                 color: GlobalColors.light,
                                                 fontSize: width < 500
                                                     ? width / 38
-                                                    : width / 35),
+                                                    : width / 55),
                                           ),
                                         ),
                                       ],
@@ -222,53 +235,76 @@ class _TasksState extends ConsumerState<Tasks> {
                                                       : GlobalColors.green,
                                               fontSize: width < 500
                                                   ? width / 40
-                                                  : width / 35),
+                                                  : width / 55),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ],
                               ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.all(2),
-                                    decoration: BoxDecoration(
-                                        color:
-                                            Color.fromARGB(255, 213, 231, 245),
-                                        borderRadius:
-                                            BorderRadius.circular(width * 0.5)),
-                                    child: Container(
-                                      child: Row(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(50),
-                                            child: Image.network(
-                                              _data[i].users![0].imageUrl!,
-                                              width: width < 500
-                                                  ? width / 22
-                                                  : width / 35,
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      for (var j = 0;
+                                          j < _data[i].users!.length;
+                                          j++)
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: EdgeInsets.all(2),
+                                          margin: EdgeInsets.all(2),
+                                          decoration: BoxDecoration(
+                                              color: Color.fromARGB(
+                                                  255, 213, 231, 245),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      width * 0.5)),
+                                          child: Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  child: Image.network(
+                                                    _data[i]
+                                                        .users![j]
+                                                        .imageUrl!,
+                                                    width: width < 500
+                                                        ? width / 22
+                                                        : width / 45,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5.0),
+                                                  child: Text(
+                                                    "${_data[i].users![j].name}",
+                                                    style:
+                                                        GoogleFonts.josefinSans(
+                                                            color: GlobalColors
+                                                                .blue,
+                                                            fontSize: width <
+                                                                    500
+                                                                ? width / 45
+                                                                : width / 55),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5.0),
-                                            child: Text(
-                                              "${_data[i].users![0].name}",
-                                              style: GoogleFonts.josefinSans(
-                                                  color: GlobalColors.blue,
-                                                  fontSize: width < 500
-                                                      ? width / 45
-                                                      : width / 35),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                        ),
+                                    ],
                                   ),
                                   if (_data[i].dueOn!.isNotEmpty)
                                     Container(
@@ -291,7 +327,7 @@ class _TasksState extends ConsumerState<Tasks> {
                                                   color: GlobalColors.dark,
                                                   fontSize: width < 500
                                                       ? width / 35
-                                                      : width / 35),
+                                                      : width / 55),
                                             ),
                                           ),
                                           Padding(
@@ -311,7 +347,7 @@ class _TasksState extends ConsumerState<Tasks> {
                                                               GlobalColors.dark,
                                                           fontSize: width < 500
                                                               ? width / 35
-                                                              : width / 35),
+                                                              : width / 55),
                                                 ),
                                                 if (DateFormat("dd-MM-yyyy")
                                                     .parse(_data[i].dueOn!)
@@ -326,7 +362,7 @@ class _TasksState extends ConsumerState<Tasks> {
                                                             fontSize: width <
                                                                     500
                                                                 ? width / 35
-                                                                : width / 35),
+                                                                : width / 55),
                                                   ),
                                               ],
                                             ),
@@ -353,6 +389,9 @@ class _TasksState extends ConsumerState<Tasks> {
                                       ),
                                     ),
                                 ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
                               ),
                             ],
                           ),

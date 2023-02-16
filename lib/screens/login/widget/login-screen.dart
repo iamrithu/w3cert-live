@@ -172,33 +172,36 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     },
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: width * 0.1,
-                      child: Switch(
-                        thumbIcon: thumbIcon,
-                        value: isSelected,
-                        onChanged: (bool value) async {
-                          // Obtain shared preferences.
-                          final prefs = await SharedPreferences.getInstance();
-                          setState(() {
-                            isSelected = value;
-                          });
-                        },
+                Container(
+                  width: width < 500 ? width : width * 0.55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: width * 0.1,
+                        child: Switch(
+                          thumbIcon: thumbIcon,
+                          value: isSelected,
+                          onChanged: (bool value) async {
+                            // Obtain shared preferences.
+                            setState(() {
+                              isSelected = value;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    Container(
-                      width: width * 0.8,
-                      child: Text(
-                        'Stay logged in',
-                        style: GoogleFonts.josefinSans(
-                            fontSize: width < 500 ? width / 35 : width / 40),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: width * 0.45,
+                        child: Text(
+                          'Stay logged in',
+                          style: GoogleFonts.ptSans(
+                              fontSize: width < 500 ? width / 35 : width / 60),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: height * 0.05,
@@ -225,7 +228,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       children: [
                         Text(
                           'Log In',
-                          style: GoogleFonts.josefinSans(
+                          style: GoogleFonts.ptSans(
                               fontSize: width < 500 ? width / 30 : width / 40),
                         ),
                         Icon(Icons.arrow_circle_right_outlined)

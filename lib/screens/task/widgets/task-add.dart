@@ -26,6 +26,8 @@ class AddTask extends ConsumerStatefulWidget {
 
 class _AddTaskState extends ConsumerState<AddTask> {
   String? project = "";
+  String priority = "low";
+
   int? projectId = 0;
   final TextEditingController _title = TextEditingController();
   final TextEditingController _description = TextEditingController();
@@ -44,6 +46,13 @@ class _AddTaskState extends ConsumerState<AddTask> {
     final width = MediaQuery.of(context).size.width;
     final data = ref.watch(projectProvider);
     final categoryData = ref.watch(CategoryProvider);
+
+    setPriority(value) {
+      setState(() {
+        priority = value;
+      });
+      Navigator.pop(context);
+    }
 
     multiMember(Map<String, dynamic> value) {
       print(value.toString());
@@ -78,20 +87,20 @@ class _AddTaskState extends ConsumerState<AddTask> {
           automaticallyImplyLeading: false,
           title: Text(
             "AddTask",
-            style: GoogleFonts.josefinSans(
+            style: GoogleFonts.ptSans(
                 color: GlobalColors.white,
                 fontSize: width < 500 ? width / 25 : width / 35),
           ),
         ),
         body: Container(
-          height: height * 0.6,
+          height: height,
           width: width,
           child: Column(
             children: [
               Card(
                 elevation: 10,
                 child: Container(
-                  height: height * 0.5,
+                  height: height * 0.55,
                   width: width,
                   padding: EdgeInsets.all(10),
                   child: Column(
@@ -107,7 +116,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                               return AlertDialog(
                                 title: Text(
                                   "Projects",
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.themeColor,
                                       fontSize: width < 500
                                           ? width / 25
@@ -150,7 +159,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                                         Expanded(
                                                           child: Text(
                                                             "${_data[i].projectName}",
-                                                            style: GoogleFonts.josefinSans(
+                                                            style: GoogleFonts.ptSans(
                                                                 color:
                                                                     GlobalColors
                                                                         .dark,
@@ -197,7 +206,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 width: width * 0.2,
                                 child: Text(
                                   "Project",
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.light,
                                       fontSize: width < 500
                                           ? width / 35
@@ -209,7 +218,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   project!,
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.dark,
                                       fontSize: width < 500
                                           ? width / 35
@@ -219,7 +228,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                               Container(
                                 width: width * 0.1,
                                 child: Icon(
-                                  Icons.arrow_forward_ios,
+                                  Icons.layers_outlined,
                                   size: width < 500 ? width / 28 : width / 35,
                                   color: GlobalColors.light,
                                 ),
@@ -237,7 +246,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                               return AlertDialog(
                                 title: Text(
                                   "Categories",
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.themeColor,
                                       fontSize: width < 500
                                           ? width / 25
@@ -279,7 +288,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                                         Expanded(
                                                           child: Text(
                                                             "${_data[i].categoryName}",
-                                                            style: GoogleFonts.josefinSans(
+                                                            style: GoogleFonts.ptSans(
                                                                 color:
                                                                     GlobalColors
                                                                         .dark,
@@ -326,7 +335,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 width: width * 0.2,
                                 child: Text(
                                   "Category",
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.light,
                                       fontSize: width < 500
                                           ? width / 35
@@ -338,7 +347,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   category!,
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.dark,
                                       fontSize: width < 500
                                           ? width / 35
@@ -348,7 +357,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                               Container(
                                 width: width * 0.1,
                                 child: Icon(
-                                  Icons.arrow_forward_ios,
+                                  Icons.category,
                                   size: width < 500 ? width / 28 : width / 35,
                                   color: GlobalColors.light,
                                 ),
@@ -375,7 +384,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 "Title *",
-                                style: GoogleFonts.josefinSans(
+                                style: GoogleFonts.ptSans(
                                     color: GlobalColors.light,
                                     fontSize:
                                         width < 500 ? width / 35 : width / 35),
@@ -387,7 +396,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 controller: _title,
                                 decoration: const InputDecoration(
                                     hintText: "Eg.New Task"),
-                                style: GoogleFonts.josefinSans(
+                                style: GoogleFonts.ptSans(
                                     color: GlobalColors.dark,
                                     fontSize:
                                         width < 500 ? width / 30 : width / 35),
@@ -400,7 +409,6 @@ class _AddTaskState extends ConsumerState<AddTask> {
                       ),
                       InkWell(
                         onTap: () {
-                          var newData = members;
                           showDialog<void>(
                             context: context,
                             barrierDismissible: true,
@@ -429,7 +437,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 width: width * 0.2,
                                 child: Text(
                                   "Members *",
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.light,
                                       fontSize: width < 500
                                           ? width / 35
@@ -459,7 +467,137 @@ class _AddTaskState extends ConsumerState<AddTask> {
                               Container(
                                 width: width * 0.1,
                                 child: Icon(
-                                  Icons.arrow_forward_ios,
+                                  Icons.person_3,
+                                  size: width < 500 ? width / 28 : width / 35,
+                                  color: GlobalColors.light,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          showDialog<void>(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: Container(
+                                  width: width * 0.5,
+                                  height: height * 0.12,
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          setPriority("low");
+                                        },
+                                        child: Card(
+                                          child: Container(
+                                            width: width,
+                                            height: height * 0.03,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "Low",
+                                              style: GoogleFonts.ptSans(
+                                                  color: GlobalColors.light,
+                                                  fontSize: width < 500
+                                                      ? width / 35
+                                                      : width / 35),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      InkWell(
+                                          onTap: () {
+                                            setPriority("medium");
+                                          },
+                                          child: Card(
+                                            child: Container(
+                                              width: width,
+                                              height: height * 0.03,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "Medium",
+                                                style: GoogleFonts.ptSans(
+                                                    color: GlobalColors.light,
+                                                    fontSize: width < 500
+                                                        ? width / 35
+                                                        : width / 35),
+                                              ),
+                                            ),
+                                          )),
+                                      InkWell(
+                                          onTap: () {
+                                            setPriority("high");
+                                          },
+                                          child: Card(
+                                            child: Container(
+                                              width: width,
+                                              height: height * 0.03,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "High",
+                                                style: GoogleFonts.ptSans(
+                                                    color: GlobalColors.light,
+                                                    fontSize: width < 500
+                                                        ? width / 35
+                                                        : width / 35),
+                                              ),
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          width: width,
+                          height: height * 0.05,
+                          decoration: BoxDecoration(
+                              border: Border(
+                            bottom: BorderSide(
+                                color: Color.fromARGB(255, 173, 171, 171),
+                                width: 0.5),
+                          )),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: width * 0.2,
+                                child: Text(
+                                  "Priority *",
+                                  style: GoogleFonts.ptSans(
+                                      color: GlobalColors.light,
+                                      fontSize: width < 500
+                                          ? width / 35
+                                          : width / 35),
+                                ),
+                              ),
+                              Container(
+                                width: width * 0.6,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  priority,
+                                  style: GoogleFonts.ptSans(
+                                      color: GlobalColors.dark,
+                                      fontSize: width < 500
+                                          ? width / 35
+                                          : width / 35),
+                                ),
+                              ),
+                              Container(
+                                width: width * 0.1,
+                                child: Icon(
+                                  Icons.priority_high,
                                   size: width < 500 ? width / 28 : width / 35,
                                   color: GlobalColors.light,
                                 ),
@@ -499,7 +637,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 width: width * 0.2,
                                 child: Text(
                                   "Start Date",
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.light,
                                       fontSize: width < 500
                                           ? width / 35
@@ -511,7 +649,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   DateFormat("dd-MM-yyyy").format(startDate),
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.dark,
                                       fontSize: width < 500
                                           ? width / 35
@@ -521,7 +659,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                               Container(
                                 width: width * 0.1,
                                 child: Icon(
-                                  Icons.arrow_forward_ios,
+                                  Icons.calendar_month,
                                   size: width < 500 ? width / 28 : width / 35,
                                   color: GlobalColors.light,
                                 ),
@@ -561,7 +699,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 width: width * 0.2,
                                 child: Text(
                                   "Due Date",
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.light,
                                       fontSize: width < 500
                                           ? width / 35
@@ -573,7 +711,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   DateFormat("dd-MM-yyyy").format(dueDate),
-                                  style: GoogleFonts.josefinSans(
+                                  style: GoogleFonts.ptSans(
                                       color: GlobalColors.dark,
                                       fontSize: width < 500
                                           ? width / 35
@@ -583,7 +721,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                               Container(
                                 width: width * 0.1,
                                 child: Icon(
-                                  Icons.arrow_forward_ios,
+                                  Icons.calendar_month,
                                   size: width < 500 ? width / 28 : width / 35,
                                   color: GlobalColors.light,
                                 ),
@@ -610,7 +748,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 "Description",
-                                style: GoogleFonts.josefinSans(
+                                style: GoogleFonts.ptSans(
                                     color: GlobalColors.light,
                                     fontSize:
                                         width < 500 ? width / 35 : width / 35),
@@ -622,87 +760,96 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 controller: _description,
                                 decoration: const InputDecoration(
                                     hintText: "Eg.New Task"),
-                                style: GoogleFonts.josefinSans(
+                                style: GoogleFonts.ptSans(
                                     color: GlobalColors.dark,
                                     fontSize:
                                         width < 500 ? width / 30 : width / 35),
                                 keyboardType: TextInputType.streetAddress,
-                                onSaved: (String? value) {},
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Color.fromARGB(255, 224, 222, 222)),
-                        child: Text(
-                          "cancel",
-                          style: GoogleFonts.josefinSans(
-                              color: Color.fromARGB(255, 99, 96, 96),
-                              fontSize: width < 500 ? width / 25 : width / 35),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          List<int> userList = [];
-                          members.map((e) => userList.add(e["id"])).toList();
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 224, 222, 222)),
+                              child: Text(
+                                "cancel",
+                                style: GoogleFonts.ptSans(
+                                    color: Color.fromARGB(255, 99, 96, 96),
+                                    fontSize:
+                                        width < 500 ? width / 25 : width / 35),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                List<int> userList = [];
+                                members
+                                    .map((e) => userList.add(e["id"]))
+                                    .toList();
 
-                          if (_title.text.trim().isEmpty)
-                            return customAlert(context, width, height, false,
-                                "Please give any title");
+                                if (_title.text.trim().isEmpty)
+                                  return customAlert(context, width, height,
+                                      false, "Please give any title");
 
-                          if (userList.isEmpty)
-                            return customAlert(context, width, height, false,
-                                "Please select atlease one member");
+                                if (userList.isEmpty)
+                                  return customAlert(
+                                      context,
+                                      width,
+                                      height,
+                                      false,
+                                      "Please select atlease one member");
 
-                          Map<String, dynamic> formData = {
-                            "heading": _title.text,
-                            "description": _description.text,
-                            "start_date": DateFormat("dd-MM-yyyy")
-                                .format(startDate)
-                                .toString(),
-                            "due_date": DateFormat("dd-MM-yyyy")
-                                .format(dueDate)
-                                .toString(),
-                            "without_duedate": null,
-                            "project_id": projectId == 0 ? "" : projectId,
-                            "category_id": categoryId == 0 ? "" : categoryId,
-                            "user_id[]": userList
-                          };
-                          Api()
-                              .addTask(ref.watch(tokenProvider), formData)
-                              .then((value) {
-                            if (value.statusCode.toString() == "500")
-                              return customAlert(context, width, height, false,
-                                  "Something went wrong!!!!");
-                            ;
-                            widget.onClick();
-                            Navigator.pop(context);
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Color.fromARGB(255, 228, 240, 250)),
-                        child: Text(
-                          "Add",
-                          style: GoogleFonts.josefinSans(
-                              color: GlobalColors.blue,
-                              fontSize: width < 500 ? width / 25 : width / 35),
+                                Map<String, dynamic> formData = {
+                                  "heading": _title.text,
+                                  "description": _description.text,
+                                  "start_date": DateFormat("dd-MM-yyyy")
+                                      .format(startDate)
+                                      .toString(),
+                                  "due_date": DateFormat("dd-MM-yyyy")
+                                      .format(dueDate)
+                                      .toString(),
+                                  "priority": priority,
+                                  "without_duedate": null,
+                                  "project_id": projectId == 0 ? "" : projectId,
+                                  "category_id":
+                                      categoryId == 0 ? "" : categoryId,
+                                  "user_id[]": userList
+                                };
+                                Api()
+                                    .addTask(ref.watch(tokenProvider), formData)
+                                    .then((value) {
+                                  if (value.statusCode.toString() == "500")
+                                    return customAlert(context, width, height,
+                                        true, "Task Created Successfully!");
+                                  ;
+                                  widget.onClick();
+                                  customAlert(context, width, height, false,
+                                      "Something went wrong!!!!");
+                                  Navigator.pop(context);
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 228, 240, 250)),
+                              child: Text(
+                                "Add",
+                                style: GoogleFonts.ptSans(
+                                    color: GlobalColors.blue,
+                                    fontSize:
+                                        width < 500 ? width / 25 : width / 35),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
