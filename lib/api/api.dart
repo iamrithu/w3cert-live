@@ -7,10 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:w3cert/models/categoryModel.dart';
 import 'package:w3cert/models/employeeModel.dart';
+import 'package:w3cert/models/leadCategoryModel.dart';
+import 'package:w3cert/models/leadCountryModel.dart';
+import 'package:w3cert/models/leadSourceModel.dart';
+import 'package:w3cert/models/leadStatusModel.dart';
 import 'package:w3cert/models/taskModel.dart';
 
 import '../const/const.dart';
 import '../models/attendenceModel.dart';
+import '../models/leadAgendModel.dart';
 import '../models/leadModel.dart';
 import '../models/leaveModel.dart';
 import '../models/notificationModel.dart';
@@ -89,6 +94,60 @@ class Api {
       Response response = await dio.post(
         "leave/${id}",
         data: jsonEncode(params),
+      );
+      print(response.toString());
+      return response;
+    } on DioError catch (e) {
+      print(e.response.toString());
+      return e.response;
+    }
+  }
+
+  Future addLead(String? token, Map<String, dynamic> data) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+
+    print(data.toString());
+
+    final formData = FormData.fromMap({
+      "client_name": data["client_name"].toString(),
+      "company_name": data["company_name"].toString(),
+      //"website": data["website"].toString(),
+      "address": data["address"].toString(),
+      "cell": data["cell"].toString(),
+      "office": "",
+      "city": data["city"].toString(),
+      "state": data["state"].toString(),
+      "country": data["country"].toString(),
+      "postal_code": data["postal_code"].toString(),
+      "salutation": data["salutation"],
+      //"client_email": data["client_email"].toString(),
+      "mobile": data["mobile"].toString(),
+      "note": data["note"].toString(),
+      "next_follow_up": data["next_follow_up"].toString(),
+      "agent_id": data["agent_id"].toString(),
+      "source_id": data["source_id"].toString(),
+      "category_id": data["category_id"].toString(),
+      "status_id": data["status_id"].toString(),
+      "value": data["value"].toString(),
+    });
+
+    try {
+      Response response = await dio.post("leads/store", data: formData);
+      return response;
+    } on DioError catch (e) {
+      return e.response;
+    }
+  }
+
+  Future leadDelete(
+    String token,
+    int id,
+  ) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+    print("${id}");
+    try {
+      Response response = await dio.delete(
+        "leads/${id}/delete",
       );
       print(response.toString());
       return response;
@@ -247,6 +306,76 @@ class providerApi {
         leads.add(LeadModel.fromJson(e));
       }).toList();
       return leads;
+    } on DioError catch (e) {
+      throw e.response!;
+    }
+  }
+
+  Future<List<LeadAgendModel>> leadsAgend(String? token) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+    try {
+      Response response = await dio.get("leads/agents");
+      List<LeadAgendModel> leadsAgends = [];
+      response.data.map((e) {
+        leadsAgends.add(LeadAgendModel.fromJson(e));
+      }).toList();
+      return leadsAgends;
+    } on DioError catch (e) {
+      throw e.response!;
+    }
+  }
+
+  Future<List<LeadSourceModel>> leadSource(String? token) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+    try {
+      Response response = await dio.get("leads/sources");
+      List<LeadSourceModel> leadsource = [];
+      response.data.map((e) {
+        leadsource.add(LeadSourceModel.fromJson(e));
+      }).toList();
+      return leadsource;
+    } on DioError catch (e) {
+      throw e.response!;
+    }
+  }
+
+  Future<List<LeadStatusModel>> leadStatus(String? token) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+    try {
+      Response response = await dio.get("leads/status");
+      List<LeadStatusModel> leadstatus = [];
+      response.data.map((e) {
+        leadstatus.add(LeadStatusModel.fromJson(e));
+      }).toList();
+      return leadstatus;
+    } on DioError catch (e) {
+      throw e.response!;
+    }
+  }
+
+  Future<List<LeadCategoryModel>> leadCategory(String? token) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+    try {
+      Response response = await dio.get("leads/category");
+      List<LeadCategoryModel> leadcategory = [];
+      response.data.map((e) {
+        leadcategory.add(LeadCategoryModel.fromJson(e));
+      }).toList();
+      return leadcategory;
+    } on DioError catch (e) {
+      throw e.response!;
+    }
+  }
+
+  Future<List<LeadCountryModel>> leadCountry(String? token) async {
+    dio.options.headers["Authorization"] = "Bearer $token";
+    try {
+      Response response = await dio.get("leads/country");
+      List<LeadCountryModel> leadcountry = [];
+      response.data.map((e) {
+        leadcountry.add(LeadCountryModel.fromJson(e));
+      }).toList();
+      return leadcountry;
     } on DioError catch (e) {
       throw e.response!;
     }

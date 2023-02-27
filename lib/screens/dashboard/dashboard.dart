@@ -211,7 +211,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                                     progressColor: GlobalColors.green,
                                   ),
                                   Text(
-                                    "Absent(${absent.length})",
+                                    "Absent(${absent.length - 2})",
                                     style: GoogleFonts.ptSans(
                                         color: GlobalColors.dark,
                                         fontSize: width < 500
@@ -223,7 +223,8 @@ class _DashboardState extends ConsumerState<Dashboard> {
                                     width: width * 0.8,
                                     animation: true,
                                     lineHeight: 4.0,
-                                    percent: absent.length / _data.length,
+                                    percent: (absent.length - 2) /
+                                        (_data.length - 2),
                                     barRadius: Radius.circular(100),
                                     backgroundColor:
                                         Color.fromARGB(255, 244, 215, 213),

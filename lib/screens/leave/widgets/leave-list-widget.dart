@@ -48,7 +48,10 @@ class _LeaveListWidgetState extends ConsumerState<LeaveListWidget> {
                             width: 0.5)),
                     child: Container(
                       width: width,
-                      height: width < 500 ? height * 0.07 : height * 0.09,
+                      constraints: BoxConstraints(
+                          minWidth: width,
+                          minHeight:
+                              width < 500 ? height * 0.08 : height * 0.09),
                       padding: EdgeInsets.only(bottom: 1),
                       child: Row(
                         children: [
@@ -82,13 +85,86 @@ class _LeaveListWidgetState extends ConsumerState<LeaveListWidget> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
+                                      width: width * 0.5,
+                                      child: Text(
+                                        "${_data[i].name}",
+                                        style: GoogleFonts.ptSans(
+                                            color: GlobalColors.themeColor,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: width < 500
+                                                ? width / 40
+                                                : width / 55),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Container(
+                                          width: width * 0.4,
+                                          child: Text(
+                                            "${widget.leave.reason}",
+                                            style: GoogleFonts.ptSans(
+                                                color: GlobalColors.light,
+                                                fontSize: width < 500
+                                                    ? width / 40
+                                                    : width / 55),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: width * 0.4,
+                                          child: Text(
+                                            "(${widget.leave.type!.typeName!})",
+                                            style: GoogleFonts.ptSans(
+                                                color: GlobalColors.light,
+                                                fontSize: width < 500
+                                                    ? width / 50
+                                                    : width / 55),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      width: 8,
+                                      height: 8,
+                                      margin: EdgeInsets.only(right: 4),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(width * 0.5),
+                                        color: widget.leave.status == "pending"
+                                            ? GlobalColors.orange
+                                            : widget.leave.status == "approved"
+                                                ? GlobalColors.green
+                                                : GlobalColors.red,
+                                      ),
+                                    ),
+                                    Text(
+                                      "${widget.leave.status}",
+                                      style: GoogleFonts.ptSans(
+                                          color: GlobalColors.dark,
+                                          fontSize: width < 500
+                                              ? width / 35
+                                              : width / 55),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
                                       width: width * 0.2,
                                       child: Text(
-                                        "${widget.leave.type!.typeName!}",
+                                        "${widget.leave.duration}",
                                         style: GoogleFonts.ptSans(
-                                            color: GlobalColors.dark,
+                                            color: GlobalColors.light,
                                             fontSize: width < 500
-                                                ? width / 35
+                                                ? width / 40
                                                 : width / 55),
                                       ),
                                     ),
@@ -120,46 +196,6 @@ class _LeaveListWidgetState extends ConsumerState<LeaveListWidget> {
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      width: width * 0.4,
-                                      child: Text(
-                                        "${widget.leave.reason}",
-                                        style: GoogleFonts.ptSans(
-                                            color: GlobalColors.light,
-                                            fontSize: width < 500
-                                                ? width / 35
-                                                : width / 55),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 8,
-                                      height: 8,
-                                      margin: EdgeInsets.only(right: 4),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(width * 0.5),
-                                        color: widget.leave.status == "pending"
-                                            ? GlobalColors.orange
-                                            : widget.leave.status == "approved"
-                                                ? GlobalColors.green
-                                                : GlobalColors.red,
-                                      ),
-                                    ),
-                                    Text(
-                                      "${widget.leave.status}",
-                                      style: GoogleFonts.ptSans(
-                                          color: GlobalColors.dark,
-                                          fontSize: width < 500
-                                              ? width / 35
-                                              : width / 55),
-                                    ),
-                                  ],
-                                )
                               ],
                             ),
                           ),

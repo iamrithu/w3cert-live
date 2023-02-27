@@ -89,6 +89,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             .watch(tokenProvider.notifier)
             .update((state) => value.data["data"]["token"]);
 
+        print(value.data["data"]["token"]);
+
         ref.watch(loggedInProvider.notifier).update((state) => true);
         customAlert(context, width, height, true,
             "Hi ,${value.data["data"]["user"]["name"]}");

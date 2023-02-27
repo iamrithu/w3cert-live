@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:w3cert/api/api.dart';
 import 'package:w3cert/const/const.dart';
 import 'package:w3cert/provider/providers.dart';
+import 'package:w3cert/screens/task/widgets/category-list.dart';
 import 'package:w3cert/screens/task/widgets/multi-participant.dart';
-
-import '../../../router/routing-const.dart';
-import '../../../widgets/custom-drawer.dart';
+import 'package:w3cert/screens/task/widgets/project-list.dart';
+import '../../../models/categoryModel.dart';
+import '../../../models/projectModel.dart';
 
 class AddTask extends ConsumerStatefulWidget {
   final Function onClick;
@@ -27,6 +27,7 @@ class AddTask extends ConsumerStatefulWidget {
 class _AddTaskState extends ConsumerState<AddTask> {
   String? project = "";
   String priority = "low";
+  List<ProjectModel> projectList = [];
 
   int? projectId = 0;
   final TextEditingController _title = TextEditingController();
@@ -46,10 +47,28 @@ class _AddTaskState extends ConsumerState<AddTask> {
     final width = MediaQuery.of(context).size.width;
     final data = ref.watch(projectProvider);
     final categoryData = ref.watch(CategoryProvider);
+    final employeeDate = ref.watch(employeProvider);
 
     setPriority(value) {
       setState(() {
         priority = value;
+      });
+      Navigator.pop(context);
+    }
+
+    getProject(ProjectModel projectList) {
+      setState(() {
+        project = projectList.projectName;
+
+        projectId = projectList.id;
+      });
+      Navigator.pop(context);
+    }
+
+    getCategory(CategoryModel catgoryList) {
+      setState(() {
+        category = catgoryList.categoryName;
+        categoryId = catgoryList.id;
       });
       Navigator.pop(context);
     }
@@ -126,56 +145,10 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                   height: height * 0.8,
                                   width: width,
                                   child: data.when(data: (_data) {
-                                    return SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          for (var i = 0; i < _data.length; i++)
-                                            InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    project =
-                                                        _data[i].projectName;
-
-                                                    projectId = _data[i].id;
-                                                  });
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Card(
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(10),
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          width: width * 0.1,
-                                                          child: Icon(
-                                                              Icons.layers,
-                                                              color:
-                                                                  GlobalColors
-                                                                      .blue,
-                                                              size: width < 500
-                                                                  ? width / 32
-                                                                  : width / 35),
-                                                        ),
-                                                        Expanded(
-                                                          child: Text(
-                                                            "${_data[i].projectName}",
-                                                            style: GoogleFonts.ptSans(
-                                                                color:
-                                                                    GlobalColors
-                                                                        .dark,
-                                                                fontSize: width <
-                                                                        500
-                                                                    ? width / 33
-                                                                    : width /
-                                                                        35),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ))
-                                        ],
-                                      ),
+                                    projectList = _data;
+                                    return ProjectList(
+                                      getProjectList: _data,
+                                      onclick: getProject,
                                     );
                                   }, error: (e, s) {
                                     return Text(e.toString());
@@ -256,55 +229,9 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                   height: height * 0.8,
                                   width: width,
                                   child: categoryData.when(data: (_data) {
-                                    return SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          for (var i = 0; i < _data.length; i++)
-                                            InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    category =
-                                                        _data[i].categoryName;
-                                                    categoryId = _data[i].id;
-                                                  });
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Card(
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(10),
-                                                    child: Row(
-                                                      children: [
-                                                        Container(
-                                                          width: width * 0.1,
-                                                          child: Icon(
-                                                              Icons.category,
-                                                              color:
-                                                                  GlobalColors
-                                                                      .blue,
-                                                              size: width < 500
-                                                                  ? width / 32
-                                                                  : width / 35),
-                                                        ),
-                                                        Expanded(
-                                                          child: Text(
-                                                            "${_data[i].categoryName}",
-                                                            style: GoogleFonts.ptSans(
-                                                                color:
-                                                                    GlobalColors
-                                                                        .dark,
-                                                                fontSize: width <
-                                                                        500
-                                                                    ? width / 33
-                                                                    : width /
-                                                                        35),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ))
-                                        ],
-                                      ),
+                                    return CategoryList(
+                                      getcategoryList: _data,
+                                      onclick: getCategory,
                                     );
                                   }, error: (e, s) {
                                     return Text(e.toString());
@@ -413,10 +340,17 @@ class _AddTaskState extends ConsumerState<AddTask> {
                             context: context,
                             barrierDismissible: true,
                             builder: (context) {
-                              return MultiSelectParticipant(
-                                onClick: multiMember,
-                                selectedMember: members,
-                              );
+                              return employeeDate.when(data: (_data) {
+                                return MultiSelectParticipant(
+                                  getemployeeList: _data,
+                                  onClick: multiMember,
+                                  selectedMember: members,
+                                );
+                              }, error: (error, stackTrace) {
+                                return Center(child: Text("e"));
+                              }, loading: () {
+                                return Text("");
+                              });
                             },
                           );
                         },
@@ -828,7 +762,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
                                 Api()
                                     .addTask(ref.watch(tokenProvider), formData)
                                     .then((value) {
-                                  if (value.statusCode.toString() == "500")
+                                  if (value.statusCode.toString() == "200")
                                     return customAlert(context, width, height,
                                         true, "Task Created Successfully!");
                                   ;

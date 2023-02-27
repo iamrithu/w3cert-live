@@ -4,9 +4,16 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:w3cert/api/api.dart';
 import 'package:w3cert/const/const.dart';
 import 'package:w3cert/models/leadModel.dart';
+import 'package:w3cert/provider/providers.dart';
+import 'package:w3cert/screens/leads/widgets/add-leads.dart';
+
+import '../../../router/routing-const.dart';
+import '../../../widgets/custom-drawer.dart';
 
 List<String> options = [
   "View",
@@ -17,10 +24,12 @@ List<String> options = [
 ];
 
 class LeadsList extends ConsumerStatefulWidget {
+  final Function onclick;
   final List<LeadModel> lead;
   const LeadsList({
     Key? key,
     required this.lead,
+    required this.onclick,
   }) : super(key: key);
 
   @override
@@ -28,15 +37,21 @@ class LeadsList extends ConsumerStatefulWidget {
 }
 
 class _LeadsListState extends ConsumerState<LeadsList> {
+  final TextEditingController search = TextEditingController();
+
   List<LeadModel> lead = [];
   String selectedOption = options[0];
+  bool searchBar = false;
+  bool isVisible = false;
+
   final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a ke
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     lead = widget.lead;
+
+    print(lead[0].toJson().toString());
   }
 
   @override
@@ -46,29 +61,151 @@ class _LeadsListState extends ConsumerState<LeadsList> {
 
     return SafeArea(
       child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showModalBottomSheet<void>(
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return FractionallySizedBox(
+                    heightFactor: 0.95,
+                    child: Container(
+                      height: height,
+                      child: AddLeads(
+                        onClick: widget.onclick,
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            child: Icon(Icons.add), // <-- Opens drawer
+          ),
           key: _key,
+          appBar: AppBar(
+            title: InkWell(
+              child: Text(
+                "Leads",
+                style: GoogleFonts.josefinSans(
+                    color: GlobalColors.white,
+                    fontSize: width < 500 ? width / 25 : width / 35),
+              ),
+            ),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                      searchBar = !searchBar;
+                      lead = widget.lead;
+                      search.text = "";
+                    });
+                  },
+                  icon: Icon(Icons.search)),
+              IconButton(
+                  onPressed: () {
+                    context
+                        .pushReplacementNamed(RoutingConstants.notifications);
+                  },
+                  icon: Icon(Icons.notifications_active_outlined))
+            ],
+          ),
+          drawer: Drawer(
+            elevation: 10,
+            width: width < 500 ? width * 0.7 : width * 0.5,
+            child: CustomDrawer(
+              width: width,
+              height: height,
+            ),
+          ),
           body: Column(
             children: [
-              TextFormField(
-                onChanged: (value) {
-                  if (value.trim() == "") {
-                    return setState(() {
-                      lead = widget.lead;
-                    });
-                  }
-                  setState(() {
-                    lead = [];
-                  });
-                  for (var i = 0; i < widget.lead.length; i++) {
-                    if (widget.lead[i].clientName!
-                        .toLowerCase()
-                        .startsWith(value.toLowerCase())) {
-                      setState(() {
-                        lead.add(widget.lead[i]);
-                      });
-                    }
-                  }
-                },
+              AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                color: GlobalColors.themeColor,
+                width: width,
+                height: searchBar ? 50 : 0,
+                child: Visibility(
+                  visible: isVisible,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: GlobalColors.white,
+                              borderRadius: BorderRadius.circular(4),
+                              border:
+                                  Border.all(color: GlobalColors.themeColor)),
+                          margin: EdgeInsets.all(2),
+                          child: TextFormField(
+                            controller: search,
+                            decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.only(bottom: 4, left: 10),
+                              border: InputBorder.none,
+                              hintText: 'Search by client',
+                              hintStyle: GoogleFonts.ptSans(
+                                  color: GlobalColors.light,
+                                  fontWeight: FontWeight.w100,
+                                  fontSize:
+                                      width < 500 ? width / 35 : width / 55),
+                            ),
+                            onChanged: (value) {
+                              if (value.trim() == "") {
+                                return setState(() {
+                                  lead = widget.lead;
+                                });
+                              }
+                              setState(() {
+                                lead = [];
+                              });
+                              for (var i = 0; i < widget.lead.length; i++) {
+                                if (widget.lead[i].clientName!
+                                    .toLowerCase()
+                                    .startsWith(value.toLowerCase())) {
+                                  setState(() {
+                                    lead.add(widget.lead[i]);
+                                  });
+                                }
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          if (search.text.trim().isNotEmpty) {
+                            return setState(() {
+                              search.text = "";
+                              lead = widget.lead;
+                            });
+                          }
+                          return setState(() {
+                            isVisible = !isVisible;
+                            searchBar = false;
+                          });
+                        },
+                        child: Container(
+                          width: width * 0.1,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: GlobalColors.themeColor,
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(color: GlobalColors.white)),
+                          margin: EdgeInsets.all(2),
+                          child: Center(
+                              child: FaIcon(
+                            FontAwesomeIcons.xmark,
+                            size: width < 500 ? width / 30 : width / 55,
+                            color: GlobalColors.white,
+                          )),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -99,7 +236,8 @@ class _LeadsListState extends ConsumerState<LeadsList> {
                                     decoration: BoxDecoration(
                                         border: Border(
                                             bottom: BorderSide(
-                                                color: GlobalColors.light,
+                                                color: Color.fromARGB(
+                                                    255, 212, 213, 213),
                                                 width: 0.5))),
                                     child: Row(
                                       mainAxisAlignment:
@@ -173,9 +311,43 @@ class _LeadsListState extends ConsumerState<LeadsList> {
                                               initialValue: selectedOption,
                                               // Callback that sets the selected popup menu item.
                                               onSelected: (item) {
-                                                setState(() {
-                                                  selectedOption = item;
-                                                });
+                                                if (item == "Delete") {
+                                                  Api()
+                                                      .leadDelete(
+                                                          ref.watch(
+                                                              tokenProvider),
+                                                          lead[i].id!)
+                                                      .then((value) {
+                                                    if (value.statusCode
+                                                            .toString() ==
+                                                        "500")
+                                                      return customAlert(
+                                                          context,
+                                                          width,
+                                                          height,
+                                                          false,
+                                                          "Something went wrong!!!!");
+                                                    ;
+                                                    widget.onclick();
+
+                                                    setState(() {
+                                                      lead.removeWhere(
+                                                        (element) =>
+                                                            element.id ==
+                                                            lead[i].id!,
+                                                      );
+                                                    });
+
+                                                    customAlert(
+                                                        context,
+                                                        width,
+                                                        height,
+                                                        true,
+                                                        "Lead Deleted Successfully!");
+                                                  });
+                                                }
+
+                                                if (item == "Add followup") {}
                                               },
                                               itemBuilder:
                                                   (BuildContext context) => [
@@ -359,28 +531,32 @@ class _LeadsListState extends ConsumerState<LeadsList> {
                                       ],
                                     ),
                                   ),
-                                  Row(
-                                    children: [
-                                      FaIcon(
-                                        Icons.factory,
-                                        size: width < 500
-                                            ? width / 40
-                                            : width / 65,
-                                        color: GlobalColors.light,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          "${lead[i].companyName ?? "--"}",
-                                          style: GoogleFonts.ptSans(
-                                              color: GlobalColors.light,
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: width < 500
-                                                  ? width / 40
-                                                  : width / 60),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Row(
+                                      children: [
+                                        FaIcon(
+                                          Icons.factory,
+                                          size: width < 500
+                                              ? width / 40
+                                              : width / 65,
+                                          color: GlobalColors.light,
                                         ),
-                                      ),
-                                    ],
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.0),
+                                          child: Text(
+                                            "${lead[i].companyName ?? "--"}",
+                                            style: GoogleFonts.ptSans(
+                                                color: GlobalColors.light,
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: width < 500
+                                                    ? width / 40
+                                                    : width / 60),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   Row(
                                     children: [
@@ -406,7 +582,8 @@ class _LeadsListState extends ConsumerState<LeadsList> {
                                     ],
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(top: 4.0),
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 10.0),
                                     child: Row(
                                       children: [
                                         lead[i].leadAgent == null

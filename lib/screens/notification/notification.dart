@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:w3cert/const/const.dart';
 import 'package:w3cert/provider/providers.dart';
 
@@ -58,7 +59,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                 itemBuilder: (context, i) {
                   return InkWell(
                     onTap: () {
-                      print("rithi");
+                      print(_data[i].toJson().toString());
                     },
                     child: Card(
                       elevation: 3,
@@ -68,14 +69,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                               color: Color.fromARGB(255, 155, 202, 244),
                               width: 0.5)),
                       child: Container(
-                        width: width,
-                        height: height * 0.07,
+                        constraints: BoxConstraints(
+                            minHeight: height * 0.07, minWidth: width),
                         padding: EdgeInsets.only(bottom: 1),
-                        // decoration: BoxDecoration(
-                        //   border: Border(
-                        //     bottom: BorderSide(color: GlobalColors.light),
-                        //   ),
-                        // ),
                         child: Row(
                           children: [
                             Container(
@@ -111,7 +107,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                                           style: GoogleFonts.ptSans(
                                               color: GlobalColors.dark,
                                               fontSize: width < 500
-                                                  ? width / 35
+                                                  ? width / 30
                                                   : width / 55),
                                         ),
                                       ),
@@ -127,8 +123,32 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                                           "${_data[i].subject ?? "--"}",
                                           style: GoogleFonts.ptSans(
                                               color: GlobalColors.light,
+                                              fontWeight: FontWeight.bold,
                                               fontSize: width < 500
-                                                  ? width / 35
+                                                  ? width / 40
+                                                  : width / 55),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_month,
+                                        size: width < 500
+                                            ? width / 40
+                                            : width / 55,
+                                      ),
+                                      Container(
+                                        width: width * 0.3,
+                                        child: Text(
+                                          "${DateFormat("dd-MM-yyyy").format(_data[i].updatedAt!)}",
+                                          style: GoogleFonts.ptSans(
+                                              color: GlobalColors.themeColor,
+                                              fontSize: width < 500
+                                                  ? width / 40
                                                   : width / 55),
                                         ),
                                       ),
@@ -137,116 +157,16 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                                 ],
                               ),
                             ),
-                            Container(
-                              width: width * 0.2,
-                              alignment: Alignment.centerRight,
-                              child: Icon(
-                                Icons.arrow_forward_ios,
-                                color: GlobalColors.light,
-                                size: width < 500 ? width / 35 : width / 55,
-                              ),
-                            ),
                           ],
                         ),
                       ),
                     ),
                   );
                 });
-            // return SingleChildScrollView(
-            //   child: Column(
-            //     children: [
-            //       for (var i = 0; i < _data.length; i++)
-            //         Card(
-            //           child: Container(
-            //             width: width,
-            //             height: height * 0.07,
-            //             padding: EdgeInsets.only(bottom: 1),
-            //             decoration: BoxDecoration(
-            //               border: Border(
-            //                 bottom: BorderSide(color: GlobalColors.light),
-            //               ),
-            //             ),
-            //             child: Row(
-            //               children: [
-            //                 Container(
-            //                   width: width * 0.13,
-            //                   margin: EdgeInsets.symmetric(
-            //                       horizontal: width * 0.02),
-            //                   child: Card(
-            //                     elevation: 10,
-            //                     shape: RoundedRectangleBorder(
-            //                         borderRadius:
-            //                             BorderRadius.circular(width * 0.5)),
-            //                     child: ClipRRect(
-            //                       borderRadius:
-            //                           BorderRadius.circular(width * 0.5),
-            //                       child: Image.network(
-            //                         _data[i].image!,
-            //                         width: width * 0.1,
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ),
-            //                 Container(
-            //                   width: width * 0.5,
-            //                   child: Column(
-            //                     mainAxisAlignment:
-            //                         MainAxisAlignment.spaceEvenly,
-            //                     children: [
-            //                       Row(
-            //                         children: [
-            //                           Flexible(
-            //                             child: Text(
-            //                               "${_data[i].text ?? "--"}",
-            //                               style: GoogleFonts.ptSans(
-            //                                   color: GlobalColors.dark,
-            //                                   fontSize: width < 500
-            //                                       ? width / 35
-            //                                       : width / 55),
-            //                             ),
-            //                           ),
-            //                         ],
-            //                       ),
-            //                       Row(
-            //                         crossAxisAlignment:
-            //                             CrossAxisAlignment.center,
-            //                         children: [
-            //                           Container(
-            //                             width: width * 0.3,
-            //                             child: Text(
-            //                               "${_data[i].subject ?? "--"}",
-            //                               style: GoogleFonts.ptSans(
-            //                                   color: GlobalColors.light,
-            //                                   fontSize: width < 500
-            //                                       ? width / 35
-            //                                       : width / 55),
-            //                             ),
-            //                           ),
-            //                         ],
-            //                       )
-            //                     ],
-            //                   ),
-            //                 ),
-            //                 Container(
-            //                   width: width * 0.2,
-            //                   alignment: Alignment.centerRight,
-            //                   child: Icon(
-            //                     Icons.arrow_forward_ios,
-            //                     color: GlobalColors.light,
-            //                     size: width < 500 ? width / 35 : width / 55,
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //         ),
-            //     ],
-            //   ),
-            // );
           }, error: (e, s) {
             return Text(e.toString());
           }, loading: () {
-            return Center(child: CircularProgressIndicator.adaptive());
+            return Center(child: Text(""));
           }),
         ),
       ),

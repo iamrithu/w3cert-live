@@ -158,7 +158,7 @@ class _CustomDrawerState extends ConsumerState<CustomDrawer> {
                     width: widget.width,
                     height: widget.height,
                     asset: FontAwesomeIcons.calendar,
-                    content: "Attendence",
+                    content: "Attendance",
                   ),
                 ),
                 // CustomListview(

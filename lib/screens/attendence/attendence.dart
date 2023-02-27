@@ -54,7 +54,7 @@ class _AttendenceState extends ConsumerState<Attendence> {
           title: Row(
             children: [
               Text(
-                "Attendence",
+                "Attendance",
                 style: GoogleFonts.ptSans(
                     color: GlobalColors.white,
                     fontSize: width < 500 ? width / 25 : width / 35),
@@ -171,111 +171,641 @@ class _AttendenceState extends ConsumerState<Attendence> {
                         for (var i = 0; i < present.length; i++)
                           if (present[i].name != "Richard C" &&
                               present[i].name != "Robinson")
-                            Card(
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  side: BorderSide(
-                                      color: Color.fromARGB(255, 155, 202, 244),
-                                      width: 0.5)),
-                              child: Container(
-                                width: width,
-                                height:
-                                    width < 500 ? height * 0.07 : height * 0.09,
-                                padding: EdgeInsets.only(bottom: 1),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: width < 500
-                                          ? width * 0.13
-                                          : width * 0.09,
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: width * 0.02),
-                                      child: Card(
-                                        elevation: 10,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                width * 0.5)),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              width * 0.5),
-                                          child: Image.network(
-                                            present[i].imageUrl!,
-                                            width: width * 0.1,
+                            InkWell(
+                              onTap: () {
+                                showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Container(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: Image.network(
+                                                present[i].imageUrl!,
+                                                width: width < 500
+                                                    ? width / 8
+                                                    : width / 45,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(),
+                                              child: Text(
+                                                "${present[i].name}",
+                                                style: GoogleFonts.ptSans(
+                                                    color: GlobalColors.light,
+                                                    fontSize: width < 500
+                                                        ? width / 28
+                                                        : width / 55),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 8,
+                                                  height: 8,
+                                                  margin:
+                                                      EdgeInsets.only(right: 4),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            width * 0.5),
+                                                    color: GlobalColors.green,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Present",
+                                                  style: GoogleFonts.ptSans(
+                                                      color: GlobalColors.dark,
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontSize: width < 500
+                                                          ? width / 40
+                                                          : width / 55),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      content: Container(
+                                        width: width,
+                                        constraints: BoxConstraints(
+                                            minHeight: height * 0.2,
+                                            minWidth: width),
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "ClockIn",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${present[i].clockInTime == null ? "--" : DateTime.parse(
+                                                          present[i]
+                                                              .clockInTime,
+                                                        ).add(DateTime.parse(present[i].clockInTime).timeZoneOffset).hour}:${DateTime.parse(
+                                                        present[i].clockInTime,
+                                                      ).add(DateTime.parse(present[i].clockInTime).timeZoneOffset).minute}:${DateTime.parse(
+                                                        present[i].clockInTime,
+                                                      ).add(DateTime.parse(present[i].clockInTime).timeZoneOffset).second} ${DateTime.parse(
+                                                            present[i]
+                                                                .clockInTime,
+                                                          ).add(DateTime.parse(present[i].clockInTime).timeZoneOffset).hour < 12 ? "am" : "pm"}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "ClockOut",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${present[i].clockOutTime == null ? "--" : "demo"}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "Late",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${present[i].late == null ? "--" : present[i].late}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "Half Day",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${present[i].halfDay == null ? "--" : present[i].halfDay}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "Working From",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${present[i].workingFrom == null ? "--" : present[i].workingFrom}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              if (_data[i].leaveDate != null)
+                                                Divider(),
+                                              if (_data[i].leaveDate != null)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.25,
+                                                      child: Text(
+                                                        "Leave Date",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .light,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.45,
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${present[i].leaveDate == null ? "--" : present[i].leaveDate}",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .dark,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              if (_data[i].leaveDate != null)
+                                                Divider(),
+                                              if (_data[i].leaveDate != null)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.25,
+                                                      child: Text(
+                                                        "Leave Reason",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .light,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.45,
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${present[i].leaveReason == null ? "--" : present[i].leaveReason}",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .dark,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              if (_data[i].leaveDate != null)
+                                                Divider(),
+                                              if (_data[i].leaveDate != null)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.25,
+                                                      child: Text(
+                                                        "Leave Duration",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .light,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.45,
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${present[i].leaveDuration == null ? "--" : present[i].leaveDuration}",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .dark,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              if (_data[i].leaveDate != null)
+                                                Divider(),
+                                              if (_data[i].leaveDate != null)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.25,
+                                                      child: Text(
+                                                        "Leave Status",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .light,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.45,
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${present[i].leaveStatus == null ? "--" : present[i].leaveStatus}",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .dark,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: width * 0.5,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "${present[i].name!}",
-                                                style: GoogleFonts.ptSans(
-                                                    color: GlobalColors.dark,
-                                                    fontSize: width < 500
-                                                        ? width / 35
-                                                        : width / 55),
-                                              ),
-                                            ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Card(
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                    side: BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 155, 202, 244),
+                                        width: 0.5)),
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                      minHeight: width < 500
+                                          ? height * 0.07
+                                          : height * 0.09,
+                                      minWidth: width),
+                                  padding: EdgeInsets.only(bottom: 1),
+                                  child: _data[i].holidayDate != null
+                                      ? Center(
+                                          child: Text(
+                                            "HOLIDAY",
+                                            style: GoogleFonts.ptSans(
+                                                letterSpacing: 4,
+                                                color: GlobalColors.dark,
+                                                fontSize: width < 500
+                                                    ? width / 30
+                                                    : width / 55),
                                           ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: width * 0.3,
-                                                child: Text(
-                                                  "${present[i].designationName}",
-                                                  style: GoogleFonts.ptSans(
-                                                      color: GlobalColors.light,
-                                                      fontSize: width < 500
-                                                          ? width / 35
-                                                          : width / 55),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 8,
-                                                height: 8,
-                                                margin:
-                                                    EdgeInsets.only(right: 4),
-                                                decoration: BoxDecoration(
+                                        )
+                                      : Row(
+                                          children: [
+                                            Container(
+                                              width: width < 500
+                                                  ? width * 0.13
+                                                  : width * 0.09,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: width * 0.02),
+                                              child: Card(
+                                                elevation: 10,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            width * 0.5)),
+                                                child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           width * 0.5),
-                                                  color: GlobalColors.green,
+                                                  child: Image.network(
+                                                    present[i].imageUrl!,
+                                                    width: width * 0.1,
+                                                  ),
                                                 ),
                                               ),
-                                              Text(
-                                                "Present",
-                                                style: GoogleFonts.ptSans(
-                                                    color: GlobalColors.dark,
-                                                    fontSize: width < 500
-                                                        ? width / 35
-                                                        : width / 55),
+                                            ),
+                                            Container(
+                                              width: width * 0.7,
+                                              child: Column(
+                                                // mainAxisAlignment:
+                                                //     MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "${present[i].name!}",
+                                                          style: GoogleFonts.ptSans(
+                                                              color:
+                                                                  GlobalColors
+                                                                      .dark,
+                                                              fontSize: width <
+                                                                      500
+                                                                  ? width / 30
+                                                                  : width / 55),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        width: width * 0.5,
+                                                        child: Text(
+                                                          "${present[i].designationName}",
+                                                          style: GoogleFonts.ptSans(
+                                                              color:
+                                                                  GlobalColors
+                                                                      .light,
+                                                              fontSize: width <
+                                                                      500
+                                                                  ? width / 40
+                                                                  : width / 55),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 4.0,
+                                                            bottom: 4),
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 8,
+                                                          height: 8,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  right: 4),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        width *
+                                                                            0.5),
+                                                            color: GlobalColors
+                                                                .green,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          "Present",
+                                                          style: GoogleFonts.ptSans(
+                                                              color:
+                                                                  GlobalColors
+                                                                      .dark,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w800,
+                                                              fontSize: width <
+                                                                      500
+                                                                  ? width / 40
+                                                                  : width / 55),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 15.0),
+                                                          child: Text(
+                                                            "${DateTime.parse(
+                                                              present[i]
+                                                                  .clockInTime,
+                                                            ).add(DateTime.parse(present[i].clockInTime).timeZoneOffset).hour}:${DateTime.parse(
+                                                              present[i]
+                                                                  .clockInTime,
+                                                            ).add(DateTime.parse(present[i].clockInTime).timeZoneOffset).minute}:${DateTime.parse(
+                                                              present[i]
+                                                                  .clockInTime,
+                                                            ).add(DateTime.parse(present[i].clockInTime).timeZoneOffset).second} ${DateTime.parse(
+                                                                  present[i]
+                                                                      .clockInTime,
+                                                                ).add(DateTime.parse(present[i].clockInTime).timeZoneOffset).hour < 12 ? "am" : "pm"}",
+                                                            style: GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .light,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 40
+                                                                    : width /
+                                                                        55),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: width * 0.2,
-                                      child: Center(
-                                          child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: GlobalColors.light,
-                                        size: width < 500
-                                            ? width / 35
-                                            : width / 55,
-                                      )),
-                                    ),
-                                  ],
+                                            ),
+                                          ],
+                                        ),
                                 ),
                               ),
                             ),
@@ -283,114 +813,589 @@ class _AttendenceState extends ConsumerState<Attendence> {
                         for (var i = 0; i < absent.length; i++)
                           if (absent[i].name != "Richard C" &&
                               absent[i].name != "Robinson")
-                            Card(
-                              elevation: 3,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4),
-                                  side: BorderSide(
-                                      color: Color.fromARGB(255, 155, 202, 244),
-                                      width: 0.5)),
-                              child: Container(
-                                width: width,
-                                height:
-                                    width < 500 ? height * 0.07 : height * 0.09,
-                                padding: EdgeInsets.only(bottom: 1),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: width < 500
-                                          ? width * 0.13
-                                          : width * 0.09,
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: width * 0.02),
-                                      child: Card(
-                                        elevation: 10,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                width * 0.5)),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              width * 0.5),
-                                          child: Image.network(
-                                            absent[i].imageUrl!,
-                                            width: width * 0.1,
+                            InkWell(
+                              onTap: () {
+                                showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Container(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: Image.network(
+                                                absent[i].imageUrl!,
+                                                width: width < 500
+                                                    ? width / 8
+                                                    : width / 45,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 5.0),
+                                              child: Text(
+                                                "${absent[i].name}",
+                                                style: GoogleFonts.ptSans(
+                                                    color: GlobalColors.light,
+                                                    fontSize: width < 500
+                                                        ? width / 28
+                                                        : width / 55),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 8,
+                                                  height: 8,
+                                                  margin:
+                                                      EdgeInsets.only(right: 4),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            width * 0.5),
+                                                    color: GlobalColors.red,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Absent",
+                                                  style: GoogleFonts.ptSans(
+                                                      color: GlobalColors.dark,
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontSize: width < 500
+                                                          ? width / 40
+                                                          : width / 55),
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      content: Container(
+                                        width: width,
+                                        constraints: BoxConstraints(
+                                            minHeight: height * 0.2,
+                                            minWidth: width),
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "ClockIn",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${absent[i].clockInTime}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "ClockOut",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${absent[i].clockOutTime}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "Late",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${absent[i].late == null ? "--" : absent[i].late}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "Half Day",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${absent[i].halfDay == null ? "--" : absent[i].halfDay}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: width * 0.25,
+                                                    child: Text(
+                                                      "Working From",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width: width * 0.45,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      "${absent[i].workingFrom == null ? "--" : absent[i].workingFrom}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color:
+                                                              GlobalColors.dark,
+                                                          fontSize: width < 500
+                                                              ? width / 35
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              if (absent[i].clockInTime == null)
+                                                Divider(),
+                                              if (absent[i].clockInTime == null)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.25,
+                                                      child: Text(
+                                                        "Leave Date",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .light,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.45,
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${absent[i].leaveDate == null ? "--" : absent[i].leaveDate}",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .dark,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              if (absent[i].clockInTime == null)
+                                                Divider(),
+                                              if (absent[i].clockInTime == null)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.25,
+                                                      child: Text(
+                                                        "Leave Reason",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .light,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.45,
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${absent[i].leaveReason == null ? "--" : absent[i].leaveReason}",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .dark,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              if (absent[i].clockInTime == null)
+                                                Divider(),
+                                              if (absent[i].clockInTime == null)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.25,
+                                                      child: Text(
+                                                        "Leave Duration",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .light,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.45,
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${absent[i].leaveDuration == null ? "--" : absent[i].leaveDuration}",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .dark,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              if (absent[i].clockInTime == null)
+                                                Divider(),
+                                              if (absent[i].clockInTime == null)
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width: width * 0.25,
+                                                      child: Text(
+                                                        "Leave Status",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .light,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: width * 0.45,
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${absent[i].leaveStatus == null ? "--" : absent[i].leaveStatus}",
+                                                        style:
+                                                            GoogleFonts.ptSans(
+                                                                color:
+                                                                    GlobalColors
+                                                                        .dark,
+                                                                fontSize: width <
+                                                                        500
+                                                                    ? width / 35
+                                                                    : width /
+                                                                        55),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                            ],
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: width * 0.5,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "${absent[i].name!}",
-                                                style: GoogleFonts.ptSans(
-                                                    color: GlobalColors.dark,
-                                                    fontSize: width < 500
-                                                        ? width / 35
-                                                        : width / 55),
-                                              ),
-                                            ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Card(
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                    side: BorderSide(
+                                        color:
+                                            Color.fromARGB(255, 155, 202, 244),
+                                        width: 0.5)),
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                      minHeight: width < 500
+                                          ? height * 0.07
+                                          : height * 0.09,
+                                      minWidth: width),
+                                  padding: EdgeInsets.only(bottom: 1),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: width < 500
+                                            ? width * 0.13
+                                            : width * 0.09,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: width * 0.02),
+                                        child: Card(
+                                          elevation: 10,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      width * 0.5)),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                                width * 0.5),
+                                            child: Image.network(
+                                              absent[i].imageUrl!,
+                                              width: width * 0.1,
+                                            ),
                                           ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: width * 0.3,
-                                                child: Text(
-                                                  "${absent[i].designationName}",
-                                                  style: GoogleFonts.ptSans(
-                                                      color: GlobalColors.light,
-                                                      fontSize: width < 500
-                                                          ? width / 35
-                                                          : width / 55),
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 8,
-                                                height: 8,
-                                                margin:
-                                                    EdgeInsets.only(right: 4),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          width * 0.5),
-                                                  color: GlobalColors.red,
-                                                ),
-                                              ),
-                                              Text(
-                                                "Absent",
-                                                style: GoogleFonts.ptSans(
-                                                    color: GlobalColors.dark,
-                                                    fontSize: width < 500
-                                                        ? width / 35
-                                                        : width / 55),
-                                              ),
-                                            ],
-                                          )
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: width * 0.2,
-                                      child: Center(
-                                          child: Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: GlobalColors.light,
-                                        size: width < 500
-                                            ? width / 35
-                                            : width / 55,
-                                      )),
-                                    ),
-                                  ],
+                                      Container(
+                                        width: width * 0.7,
+                                        child: Column(
+                                          // mainAxisAlignment:
+                                          //     MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 4.0),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "${absent[i].name!}",
+                                                    style: GoogleFonts.ptSans(
+                                                        color:
+                                                            GlobalColors.dark,
+                                                        fontSize: width < 500
+                                                            ? width / 30
+                                                            : width / 55),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: width * 0.5,
+                                                  child: Text(
+                                                    "${absent[i].designationName}",
+                                                    style: GoogleFonts.ptSans(
+                                                        color:
+                                                            GlobalColors.light,
+                                                        fontSize: width < 500
+                                                            ? width / 40
+                                                            : width / 55),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 4.0, bottom: 4),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    width: 8,
+                                                    height: 8,
+                                                    margin: EdgeInsets.only(
+                                                        right: 4),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              width * 0.5),
+                                                      color: GlobalColors.red,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Absent",
+                                                    style: GoogleFonts.ptSans(
+                                                        color:
+                                                            GlobalColors.dark,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        fontSize: width < 500
+                                                            ? width / 40
+                                                            : width / 55),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 15.0),
+                                                    child: Text(
+                                                      "${absent[i].leaveReason ?? "--"}",
+                                                      style: GoogleFonts.ptSans(
+                                                          color: GlobalColors
+                                                              .light,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: width < 500
+                                                              ? width / 40
+                                                              : width / 55),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            )
+                            ),
                     ],
                   ),
                 );
